@@ -1,0 +1,20 @@
+- name: Create a new database
+  community.mysql.mysql_db:
+    login_user: root
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    login_password: "{{ mysql.root_password }}"
+    name: "{{ mysql.database.name }}"
+    state: present
+  when:  mysql.database.enabled | bool
+
+- name: Create database user with name {{ mysql.user.name }} with all database privileges on {{mysql.database.name}}
+  community.mysql.mysql_user:
+    login_user: root
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    login_password: "{{ mysql.root_password }}"
+    name: "{{ mysql.user.name }}"
+    password: "{{ mysql.user.password }}"
+    priv: "{{mysql.database.name}}.*:ALL"
+    state: present
+    host: "%"
+  when: mysql.database.enabled and mysql.user.enabled | bool

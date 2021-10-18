@@ -1,0 +1,6 @@
+- name: Create user and database
+  hosts: all
+  tasks: 
+    - import_role:
+        name: ./
+        tasks_from: mysql-create-user-database.yaml

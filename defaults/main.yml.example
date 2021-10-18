@@ -2,3 +2,10 @@
 mysql:
   root_password: "<your-secret-password>"
   server_version: 5.7
+  database:
+    enabled: false
+    name: "<your-database-name>"
+  user:
+    enabled: false
+    name: "<your-username>"
+    password: "<your-password>"
