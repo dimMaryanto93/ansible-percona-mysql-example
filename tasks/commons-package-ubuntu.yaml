@@ -1,0 +1,12 @@
+---
+- name: Install dependencies for MySQL Server
+  apt: 
+    name: "{{ item }}"
+    state: latest
+  loop: ["gnupg2", "python3-pip"]
+
+- name: Install Docker Module for Python
+  pip:
+    name: PyMySQL
+    state: latest
+    executable: pip3

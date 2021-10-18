@@ -1,0 +1,4 @@
+---
+mysql:
+  root_password: secretPassword
+  server_version: 5.7

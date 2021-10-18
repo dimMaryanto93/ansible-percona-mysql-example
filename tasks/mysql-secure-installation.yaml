@@ -1,0 +1,12 @@
+---
+- name: Update mysql root password for all root accounts
+  community.mysql.mysql_user: 
+    check_implicit_admin: yes
+    name: root 
+    password: "{{ mysql_root_password }}"
+    host: "{{ item }}" 
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    state: present
+  loop:
+    - "127.0.0.1"
+    - localhost

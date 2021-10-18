@@ -1,0 +1,38 @@
+---
+- apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: 9334A25F8507EFA5
+    state: present
+
+- name: Add Percona repository
+  apt_repository: 
+    repo: "deb http://repo.percona.com/percona/apt {{ ansible_distribution_release }} main"
+    state: present
+    filename: percona-original-release
+
+- name: Add Percona source repository
+  apt_repository: 
+    repo: "deb-src http://repo.percona.com/percona/apt {{ ansible_distribution_release }} main"
+    state: present
+    filename: percona-original-release
+
+- name: Update apt cache
+  apt: update_cache=yes
+
+- name: Install Percona packages for mysql-{{ mysql.server_version }} version
+  apt: 
+    pkg: "{{ item }}" 
+    state: present 
+    update_cache: yes
+  loop:
+    - percona-server-common-{{ mysql.server_version }}
+    - percona-server-client-{{ mysql.server_version }}
+    - percona-server-server-{{ mysql.server_version }}
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+
+- name: Enable Percona MySQL-{{ mysql.server_version }}
+  service:
+    name: mysql
+    state: started
+    enabled: yes

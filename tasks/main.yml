@@ -1,0 +1,13 @@
+---
+- name: Installing commons package for ubuntu
+  include_tasks: commons-package-ubuntu.yaml
+  when: ansible_facts['distribution'] == 'Ubuntu'
+
+- name: Installing MySQL Percona Server for Ubuntu
+  include_tasks: mysql-server-ubuntu.yaml
+  when: ansible_facts['distribution'] == 'Ubuntu'
+
+- name: Add rule to firewall for MySQL for Ubuntu
+  include_tasks: mysql-ufw-cmd.yaml
+  when: ansible_facts['distribution'] == 'Ubuntu'
+
