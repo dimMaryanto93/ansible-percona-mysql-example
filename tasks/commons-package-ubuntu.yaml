@@ -3,7 +3,7 @@
   apt: 
     name: "{{ item }}"
     state: latest
-  loop: ["gnupg2", "python3-pip"]
+  loop: ["gnupg2", "python3-pip", "default-libmysqlclient-dev"]
 
 - name: Install Docker Module for Python
   pip:

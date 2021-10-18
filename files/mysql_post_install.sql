@@ -1,0 +1,3 @@
+-- CREATE FUNCTION fnvla_64 RETURNS INTEGER SONAME 'libfnvla_udf.so';
+CREATE FUNCTION fnv_64 RETURNS INTEGER SONAME 'libfnv_udf.so';
+CREATE FUNCTION murmur_hash RETURNS INTEGER SONAME 'libmurmur_udf.so'

@@ -28,6 +28,7 @@
     - percona-server-common-{{ mysql.server_version }}
     - percona-server-client-{{ mysql.server_version }}
     - percona-server-server-{{ mysql.server_version }}
+    - libperconaserverclient20-dev
   environment:
     DEBIAN_FRONTEND: noninteractive
 

@@ -11,3 +11,15 @@
   include_tasks: mysql-ufw-cmd.yaml
   when: ansible_facts['distribution'] == 'Ubuntu'
 
+- name: Copy MySQL User Defined Functions
+  copy:
+    src: mysql_post_install.sql
+    dest: "/tmp/mysql_post_install.sql"
+    mode: "0600"
+
+- name: Several useful User Defined Functions (UDF) from Percona Toolkit
+  mysql_db:
+    name: all
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    state: import
+    target: "/tmp/mysql_post_install.sql"
