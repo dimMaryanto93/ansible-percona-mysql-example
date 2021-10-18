@@ -1,4 +1,4 @@
 ---
 mysql:
-  root_password: secretPassword
+  root_password: "<your-secret-password>"
   server_version: 5.7
