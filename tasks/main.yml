@@ -23,3 +23,29 @@
     login_unix_socket: /var/run/mysqld/mysqld.sock
     state: import
     target: "/tmp/mysql_post_install.sql"
+
+- name: Select user root to get authentication
+  community.mysql.mysql_query:
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    query: SELECT count(*) as rows FROM mysql.user u WHERE u.user = %(username)s AND u.authentication_string = %(raw_auth)s
+    named_args:
+      username: root
+      raw_auth: ''
+  register: root_has_password
+
+- debug:
+    var: root_has_password.query_result[0][0].rows
+
+- name: Update mysql root password for all root accounts
+  community.mysql.mysql_user: 
+    check_implicit_admin: yes
+    name: root 
+    password: "{{ mysql.root_password }}"
+    host: "{{ item }}" 
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    state: present
+  loop:
+    - "{{ ansible_host }}"
+    - "127.0.0.1"
+    - localhost
+  when: root_has_password.query_result[0][0].rows | int >= 1
