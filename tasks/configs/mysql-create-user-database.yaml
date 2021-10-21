@@ -5,7 +5,8 @@
     login_password: "{{ mysql.root_password }}"
     name: "{{ mysql.database.name }}"
     state: present
-  when:  mysql.database.enabled | bool
+  when:  
+    - mysql.database.enabled | bool
 
 - name: Create database user with name {{ mysql.user.name }} with all database privileges on {{mysql.database.name}}
   community.mysql.mysql_user:
@@ -17,4 +18,5 @@
     priv: "{{mysql.database.name}}.*:ALL"
     state: present
     host: "%"
-  when: mysql.database.enabled and mysql.user.enabled | bool
+  when: 
+    - mysql.database.enabled and mysql.user.enabled | bool

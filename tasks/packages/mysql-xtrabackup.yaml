@@ -28,3 +28,12 @@
     mode: 0644
   notify:
     - Restart mysql
+
+- name: Create datadir if it does not exist
+  file:
+    path: "{{ mysqld.data_dir }}"
+    state: directory
+    owner: "{{ mysqld.mysql_user }}"
+    group: "{{ mysqld.mysql_user }}"
+    mode: 0755
+    setype: mysqld_db_t

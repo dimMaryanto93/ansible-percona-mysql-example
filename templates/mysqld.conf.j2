@@ -33,6 +33,7 @@ binlog_format       = {{ mysqld.binlog_format}}
 
 {% if mysql_replication_role == 'slave' %}
 read_only
+skip-slave-start
 relay-log           = relay-bin
 relay-log-index     = relay-bin.index
 {% endif %}

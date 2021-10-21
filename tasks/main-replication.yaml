@@ -1,0 +1,71 @@
+---
+- name: Installing Percona MySQL XtraBackup
+  when: 
+    - xtrabackup.enabled 
+    - mysql_replication_role == "master"
+  block:
+    - name: Install Percona MySQL XtraBackup for Ubuntu
+      include_tasks: packages/mysql-xtrabackup.yaml
+      when: ansible_facts['distribution'] == 'Ubuntu'
+
+- name: Ensure replication user exists on master.
+  mysql_user:
+    login_user: root
+    login_unix_socket: "{{ mysqld.socket_login }}"
+    login_password: "{{ mysql.root_password }}"
+    name: "{{ replication.user.name }}"
+    host: "{{ replication.user.host | default('%') }}"
+    password: "{{ replication.user.password }}"
+    priv: "{{ replication.user.privs | default('*.*:REPLICATION SLAVE,REPLICATION CLIENT') }}"
+    state: present
+  when:
+    - mysql_replication_role == 'master'
+
+- name: Check slave replication status.
+  mysql_replication:
+    login_unix_socket: "{{ mysqld.socket_login }}"
+    mode: getslave
+  ignore_errors: true
+  register: slave_node
+  when:
+    - mysql_replication_role == 'slave'
+
+- name: Debug replication status
+  debug:
+    msg: "{{ slave_node }}"
+
+- name: Check master replication status.
+  mysql_replication: 
+    mode: getmaster
+    login_unix_socket: "{{ mysqld.socket_login }}"
+  delegate_to: "{{ replication.master.node }}"
+  register: master_node
+  when:
+    - mysql_replication_role == 'slave'
+
+- name: Debug replication status
+  debug:
+    msg: "{{ master_node }}"
+
+- name: Configure replication on the slave.
+  mysql_replication:
+    mode: changemaster
+    login_unix_socket: "{{ mysqld.socket_login }}"
+    master_host: "{{ replication.master.ip }}"
+    master_user: "{{ replication.user.name }}"
+    master_password: "{{ replication.user.password }}"
+    master_log_file: "{{ master_node.File }}"
+    master_log_pos: "{{ master_node.Position }}"
+  ignore_errors: true
+  when:
+    - (slave_node.Is_Slave is defined and not slave_node.Is_Slave) or (slave_node.Is_Slave is not defined and slave_node is failed)
+    - mysql_replication_role == 'slave'
+
+- name: Start replication.
+  mysql_replication: 
+    login_user: root
+    login_unix_socket: "{{ mysqld.socket_login }}"
+    mode: startslave
+  when:
+    - (slave_node.Is_Slave is defined and not slave_node.Is_Slave) or (slave_node.Is_Slave is not defined and slave_node is failed)
+    - mysql_replication_role == 'slave'

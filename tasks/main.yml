@@ -11,13 +11,6 @@
       include_tasks: packages/mysql-server-ubuntu.yaml
       when: ansible_facts['distribution'] == 'Ubuntu'
 
-- name: Installing Percona MySQL XtraBackup
-  when: xtrabackup.enabled
-  block:
-    - name: Install Percona MySQL XtraBackup for Ubuntu
-      include_tasks: packages/mysql-xtrabackup.yaml
-      when: ansible_facts['distribution'] == 'Ubuntu'
-
 - name: Add rule to firewall for MySQL
   block:
     - name: Allow MySQL access globaly for Ubuntu

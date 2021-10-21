@@ -6,6 +6,7 @@ mysqld:
   pid_file: /var/run/mysqld/mysqld.pid
   socket_login: /var/run/mysqld/mysqld.sock
   log_location: /var/log/mysql/error.log
+  data_dir: /var/lib/mysql
   server_port: 3306
   expire_logs_days: 10
   max_binlog_size: 100M
@@ -25,4 +26,17 @@ mysql:
 
 xtrabackup:
   enabled: false
+  admin:
+    user: "<xtrabackup-admin-user>"
+    password: "<xtrabackup-admin-password>"    
   version: 24 # install version xpora xtra-backup availabel ref https://www.percona.com/doc/percona-xtrabackup/8.0/index.html
+
+replication:
+  master:
+    node: "{{ groups['mysql_master_cluster'] | first }}"
+    ip: "{{ hostvars[groups['mysql_master_cluster'] | first ]['ansible_default_ipv4']['address'] }}"
+  user:
+    name: "<replication-admin>"
+    password: "<replication-admin-password>"
+    host: "%" # grant permission all by default, or you can specify host ex: 192.168.%
+    privs: "*.*:REPLICATION SLAVE,REPLICATION CLIENT"
