@@ -1,4 +1,17 @@
 ---
+# generate [mysqld] config to /etc/mysql/percona-server.conf.d/mysqld.cnf
+mysqld:
+  conf_location: /etc/mysql/percona-server.conf.d/mysqld.cnf
+  mysql_user: mysql
+  pid_file: /var/run/mysqld/mysqld.pid
+  socket_login: /var/run/mysqld/mysqld.sock
+  log_location: /var/log/mysql/error.log
+  server_port: 3306
+  expire_logs_days: 10
+  max_binlog_size: 100M
+  binlog_format: ROW
+
+## mysql client config
 mysql:
   root_password: "<your-secret-password>"
   server_version: 5.7
@@ -9,3 +22,7 @@ mysql:
     enabled: false
     name: "<your-username>"
     password: "<your-password>"
+
+xtrabackup:
+  enabled: false
+  version: 24 # install version xpora xtra-backup availabel ref https://www.percona.com/doc/percona-xtrabackup/8.0/index.html

@@ -1,1 +1,2 @@
-localhost   ansible_port=22     ansible_user=ansible    ansible_host=192.168.88.235
+vm_master01   ansible_port=22     ansible_user=ansible    ansible_host=192.168.100.11   mysql_server_id='1' mysql_replication=true mysql_replication_role="master"
+vm_master02   ansible_port=22     ansible_user=ansible    ansible_host=192.168.100.12   mysql_server_id='3' mysql_replication=true mysql_replication_role="slave"

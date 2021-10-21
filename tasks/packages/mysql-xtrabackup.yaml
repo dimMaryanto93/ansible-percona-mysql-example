@@ -1,0 +1,30 @@
+---
+- name: Add repository XtraBackup
+  apt: 
+    deb: https://repo.percona.com/apt/percona-release_latest.{{ ansible_distribution_release | lower }}_all.deb
+  notify:
+    - Enable repository
+
+- name: Update apt cache
+  apt: update_cache=yes
+
+- name: Install Percona XtraBackup version {{ xtrabackup.version }}
+  apt: 
+    pkg: "{{ item }}" 
+    state: present
+    update_cache: yes
+  loop:
+    - percona-xtrabackup-{{ xtrabackup.version }}
+    - libgcrypt20
+    - openssl
+    - qpress
+    - curl
+
+- name: Set variable on mysqld.cnf
+  template:
+    src: mysqld.conf.j2
+    dest: "{{ mysqld.conf_location }}"
+    backup: true
+    mode: 0644
+  notify:
+    - Restart mysql

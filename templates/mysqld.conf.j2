@@ -1,0 +1,39 @@
+[mysqld]
+user                = {{ mysqld.mysql_user }}
+pid-file            = {{ mysqld.pid_file }}
+socket              = {{ mysqld.socket_login }}
+port                = {{ mysqld.server_port }}
+
+basedir             = /usr
+datadir             = /var/lib/mysql
+tmpdir              = /tmp
+lc-messages-dir     = /usr/share/mysql
+
+explicit_defaults_for_timestamp
+
+log-error           = {{ mysqld.log_location }}
+
+# Recommended in standard MySQL setup
+sql_mode            = NO_ENGINE_SUBSTITUTION,STRICT_ALL_TABLES
+
+# Disabling symbolic-links is recommended to prevent assorted security risks
+symbolic-links      = 0
+
+# Replication
+{% if mysql_replication %}
+server-id           = {{ mysql_server_id }}
+
+{% if mysql_replication_role == 'master' %}
+log_bin             = mysql-bin
+log-bin-index       = mysql-bin.index
+expire_logs_days    = {{ mysqld.expire_logs_days }}
+max_binlog_size     = {{ mysqld.max_binlog_size }}
+binlog_format       = {{ mysqld.binlog_format}}
+{% endif %}
+
+{% if mysql_replication_role == 'slave' %}
+read_only
+relay-log           = relay-bin
+relay-log-index     = relay-bin.index
+{% endif %}
+{% endif %}

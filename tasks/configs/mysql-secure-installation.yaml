@@ -19,7 +19,7 @@
 
 - name: Select user root to get authentication
   community.mysql.mysql_query:
-    login_unix_socket: /var/run/mysqld/mysqld.sock
+    login_unix_socket: "{{ mysqld.socket_login }}"
     login_user: root
     query: SELECT count(*) as rows FROM mysql.user u WHERE u.user = %(username)s AND u.authentication_string = %(raw_auth)s
     named_args:
@@ -33,7 +33,7 @@
     name: root 
     password: "{{ mysql.root_password }}"
     host: "{{ item }}" 
-    login_unix_socket: /var/run/mysqld/mysqld.sock
+    login_unix_socket: "{{ mysqld.socket_login }}"
     state: present
   loop:
     - "127.0.0.1"

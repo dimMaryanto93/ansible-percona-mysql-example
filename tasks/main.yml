@@ -1,12 +1,25 @@
 ---
-- name: Installing commons package for ubuntu
-  include_tasks: commons-package-ubuntu.yaml
-  when: ansible_facts['distribution'] == 'Ubuntu'
+- name: Installing commons package
+  block:
+    - name: MySQL package for Ubuntu
+      include_tasks: common/dependencies-ubuntu.yaml
+      when: ansible_facts['distribution'] == 'Ubuntu'
 
-- name: Installing MySQL Percona Server for Ubuntu
-  include_tasks: mysql-server-ubuntu.yaml
-  when: ansible_facts['distribution'] == 'Ubuntu'
+- name: Installing Percona MySQL Server
+  block:
+    - name: Install Percona MySQL Server for Ubuntu
+      include_tasks: packages/mysql-server-ubuntu.yaml
+      when: ansible_facts['distribution'] == 'Ubuntu'
 
-- name: Add rule to firewall for MySQL for Ubuntu
-  include_tasks: mysql-ufw-cmd.yaml
-  when: ansible_facts['distribution'] == 'Ubuntu'
+- name: Installing Percona MySQL XtraBackup
+  when: xtrabackup.enabled
+  block:
+    - name: Install Percona MySQL XtraBackup for Ubuntu
+      include_tasks: packages/mysql-xtrabackup.yaml
+      when: ansible_facts['distribution'] == 'Ubuntu'
+
+- name: Add rule to firewall for MySQL
+  block:
+    - name: Allow MySQL access globaly for Ubuntu
+      include_tasks: iptables/mysql-ufw-cmd.yaml
+      when: ansible_facts['distribution'] == 'Ubuntu'

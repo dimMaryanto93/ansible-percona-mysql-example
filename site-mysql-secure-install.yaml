@@ -4,4 +4,4 @@
   tasks: 
     - import_role:
         name: ./
-        tasks_from: mysql-secure-installation
+        tasks_from: configs/mysql-secure-installation

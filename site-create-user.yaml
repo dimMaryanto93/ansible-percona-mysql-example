@@ -3,4 +3,4 @@
   tasks: 
     - import_role:
         name: ./
-        tasks_from: mysql-create-user-database.yaml
+        tasks_from: configs/mysql-create-user-database.yaml
