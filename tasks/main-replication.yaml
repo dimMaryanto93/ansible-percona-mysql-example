@@ -70,7 +70,6 @@
     login_user: root
     login_unix_socket: "{{ mysqld.socket_login }}"
     login_password: "{{ mysql.root_password }}"
-    login_user: root
     mode: startslave
   when:
     - (slave_node.Is_Slave is defined and not slave_node.Is_Slave) or (slave_node.Is_Slave is not defined and slave_node is failed)
