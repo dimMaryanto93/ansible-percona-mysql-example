@@ -1,8 +1,6 @@
 ---
 - name: Installing Percona MySQL XtraBackup
-  when: 
-    - xtrabackup.enabled 
-    - mysql_replication_role == "master"
+  when: xtrabackup.enabled 
   block:
     - name: Install Percona MySQL XtraBackup for Ubuntu
       include_tasks: packages/mysql-xtrabackup.yaml
@@ -23,7 +21,9 @@
 
 - name: Check slave replication status.
   mysql_replication:
+    login_user: root
     login_unix_socket: "{{ mysqld.socket_login }}"
+    login_password: "{{ mysql.root_password }}"
     mode: getslave
   ignore_errors: true
   register: slave_node
@@ -37,7 +37,9 @@
 - name: Check master replication status.
   mysql_replication: 
     mode: getmaster
+    login_user: root
     login_unix_socket: "{{ mysqld.socket_login }}"
+    login_password: "{{ mysql.root_password }}"
   delegate_to: "{{ replication.master.node }}"
   register: master_node
   when:
@@ -50,7 +52,9 @@
 - name: Configure replication on the slave.
   mysql_replication:
     mode: changemaster
+    login_user: root
     login_unix_socket: "{{ mysqld.socket_login }}"
+    login_password: "{{ mysql.root_password }}"
     master_host: "{{ replication.master.ip }}"
     master_user: "{{ replication.user.name }}"
     master_password: "{{ replication.user.password }}"
@@ -65,6 +69,8 @@
   mysql_replication: 
     login_user: root
     login_unix_socket: "{{ mysqld.socket_login }}"
+    login_password: "{{ mysql.root_password }}"
+    login_user: root
     mode: startslave
   when:
     - (slave_node.Is_Slave is defined and not slave_node.Is_Slave) or (slave_node.Is_Slave is not defined and slave_node is failed)

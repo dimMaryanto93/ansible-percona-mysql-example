@@ -1,7 +1,0 @@
-- name: MySQL secure installation
-  hosts: all
-  become: true
-  tasks: 
-    - import_role:
-        name: ./
-        tasks_from: configs/mysql-secure-installation

@@ -4,3 +4,11 @@
   become: true
   roles: 
     - ./
+
+- name: MySQL secure installation
+  hosts: all
+  become: true
+  tasks: 
+    - import_role:
+        name: ./
+        tasks_from: main-config.yaml

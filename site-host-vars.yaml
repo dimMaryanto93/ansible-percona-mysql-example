@@ -1,6 +1,0 @@
-- name: Create user and database
-  hosts: all
-  tasks: 
-    - name: show variables
-      debug: 
-        msg: "{{ hostvars[groups['mysql_master_cluster'] | first ]['ansible_default_ipv4']['address'] }}"

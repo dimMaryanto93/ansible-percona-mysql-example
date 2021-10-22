@@ -1,0 +1,7 @@
+- name: Secure account
+  block:
+    - name: Run mysql_secure_installation statement
+      include_tasks: configs/mysql-secure-installation.yaml
+
+    - name: Create user & database default transaction
+      include_tasks: configs/mysql-create-user-database.yaml

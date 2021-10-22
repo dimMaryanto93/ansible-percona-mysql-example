@@ -1,4 +1,4 @@
-- name: MySQL secure installation
+- name: MySQL create Replication
   hosts: all
   become: true
   tasks: 
