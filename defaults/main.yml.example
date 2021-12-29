@@ -11,6 +11,17 @@ mysqld:
   expire_logs_days: 10
   max_binlog_size: 100M
   binlog_format: ROW
+  max_connections: 10000
+  innodb_buffer_pool_instances: 32
+  innodb_buffer_pool_chunk_size: 8G
+  innodb_fast_shutdown: 0
+  query_cache_size: 0
+  key_buffer_size: 16G
+  innodb_buffer_pool_size: 41G
+  innodb_log_file_size: 4G
+  innodb_file_per_table: ON
+  thread_cache_size: 256
+  innodb_log_buffer_size: 521M
 
 ## mysql client config
 mysql:
