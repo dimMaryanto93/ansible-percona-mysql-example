@@ -3,7 +3,7 @@ user                            = {{ mysqld.mysql_user }}
 pid-file                        = {{ mysqld.pid_file }}
 socket                          = {{ mysqld.socket_login }}
 port                            = {{ mysqld.server_port }}
-bind-address                    = {{ mysqld.bind-address }}
+bind-address                    = {{ mysqld.bind_address | default('localhost') }}
 
 basedir                         = /usr
 datadir                         = /var/lib/mysql
@@ -59,6 +59,7 @@ concurrent_insert               = {{ mysqld.concurrent_insert | default('2') }}
 query_cache_limit               = {{ mysqld.query_cache_limit | default('256K') }}
 log_warnings                    = 2
 log-queries-not-using-indexes
+log_bin_trust_function_creators = {{ mysqld.log_bin_trust_function_creators | default('1') }}
 
 # Enable the slow query log to see queries with especially long duration
 slow_query_log                  = {{ mysqld.slow_query_log | default('1') }}
