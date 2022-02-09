@@ -3,6 +3,7 @@
 mysqld:
   conf_location: /etc/mysql/percona-server.conf.d/mysqld.cnf
   mysql_user: mysql
+  bind-address: 0.0.0.0
   pid_file: /var/run/mysqld/mysqld.pid
   socket_login: /var/run/mysqld/mysqld.sock
   log_location: /var/log/mysql/error.log
