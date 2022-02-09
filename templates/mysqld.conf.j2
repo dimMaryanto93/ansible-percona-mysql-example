@@ -3,6 +3,7 @@ user                            = {{ mysqld.mysql_user }}
 pid-file                        = {{ mysqld.pid_file }}
 socket                          = {{ mysqld.socket_login }}
 port                            = {{ mysqld.server_port }}
+bind-address                    = {{ mysqld.bind-address }}
 
 basedir                         = /usr
 datadir                         = /var/lib/mysql
