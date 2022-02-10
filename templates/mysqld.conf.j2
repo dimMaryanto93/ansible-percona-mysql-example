@@ -25,8 +25,8 @@ symbolic-links                  = 0
 connect_timeout                 = {{ mysqld.connect_timeout | default('50') }}
 key_buffer_size                 = {{ mysqld.key_buffer_size }}
 max_connections                 = {{ mysqld.max_connections | default('150') }}
-query_cache_size                = {{ mysqld.query_cache_size }}
-show_compatibility_56           = OFF
+# query_cache_size                = {{ mysqld.query_cache_size }}
+# show_compatibility_56           = OFF
 
 # MySQL Tunning innodb engine
 default_storage_engine          = InnoDB
@@ -56,8 +56,8 @@ myisam_recover_options          = {{ mysqld.myisam_recover_options | default('BA
 table_open_cache                = {{ mysqld.table_open_cache | default('12288') }}
 myisam_sort_buffer_size         = {{ mysqld.myisam_sort_buffer_size | default('512M') }}
 concurrent_insert               = {{ mysqld.concurrent_insert | default('2') }}
-query_cache_limit               = {{ mysqld.query_cache_limit | default('256K') }}
-log_warnings                    = 2
+# query_cache_limit               = {{ mysqld.query_cache_limit | default('256K') }}
+# log_warnings                    = 2
 log-queries-not-using-indexes
 log_bin_trust_function_creators = {{ mysqld.log_bin_trust_function_creators | default('1') }}
 
