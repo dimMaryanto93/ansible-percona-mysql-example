@@ -1,7 +1,4 @@
-- name: Secure account
+- name: Config mysql
   block:
     - name: Config variables
       include_tasks: configs/mysql-config-variables.yaml
-
-    - name: Create user & database default transaction
-      include_tasks: configs/mysql-create-user-database.yaml

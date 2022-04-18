@@ -9,6 +9,7 @@ basedir                         = /usr
 datadir                         = /var/lib/mysql
 tmpdir                          = /tmp
 lc-messages-dir                 = /usr/share/mysql
+open_files_limit                = {{ mysqld.ulimit | default('102400') }}
 
 explicit_defaults_for_timestamp
 
@@ -22,9 +23,10 @@ sql_mode                        = NO_ENGINE_SUBSTITUTION,STRICT_ALL_TABLES
 symbolic-links                  = 0
 
 # MySQL Tunning connection
-connect_timeout                 = {{ mysqld.connect_timeout | default('50') }}
-key_buffer_size                 = {{ mysqld.key_buffer_size }}
-max_connections                 = {{ mysqld.max_connections | default('150') }}
+connect_timeout                 = {{ mysqld.connect_timeout | default('10') }}
+wait_timeout                    = {{ mysqld.wait_timeout | default('15') }}
+key_buffer_size                 = {{ mysqld.key_buffer_size | default('52') }}
+max_connections                 = {{ mysqld.max_connections | default('1000') }}
 # query_cache_size                = {{ mysqld.query_cache_size }}
 # show_compatibility_56           = OFF
 
@@ -62,10 +64,10 @@ log-queries-not-using-indexes
 log_bin_trust_function_creators = {{ mysqld.log_bin_trust_function_creators | default('1') }}
 
 # Enable the slow query log to see queries with especially long duration
-slow_query_log                  = {{ mysqld.slow_query_log | default('1') }}
+slow_query_log                  = {{ mysqld.slow_query_log | default('0') }}
 slow_query_log_file             = {{ mysqld.log_slow_location }}
-long_query_time                 = {{ mysqld.long_query_time | default('1') }}
-log_slow_rate_limit             = {{ mysqld.log_slow_rate_limit | default('1000') }}
+long_query_time                 = {{ mysqld.long_query_time | default('5') }}
+log_slow_rate_limit             = {{ mysqld.log_slow_rate_limit | default('5000') }}
 log_slow_verbosity              = {{ mysqld.log_slow_verbosity | default('query_plan') }}
 
 # Replication

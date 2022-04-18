@@ -1,0 +1,4 @@
+- name: Secure account
+  block:
+    - name: Create user & database default transaction
+      include_tasks: configs/mysql-create-user-database.yaml
