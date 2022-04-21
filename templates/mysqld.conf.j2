@@ -26,30 +26,31 @@ symbolic-links                  = 0
 connect_timeout                 = {{ mysqld.connect_timeout | default('10') }}
 wait_timeout                    = {{ mysqld.wait_timeout | default('15') }}
 key_buffer_size                 = {{ mysqld.key_buffer_size | default('52') }}
-max_connections                 = {{ mysqld.max_connections | default('1000') }}
+max_connections                 = {{ mysqld.max_connections | default('10000') }}
+max_allowed_packet    		    = {{ mysqld.max_allowed_packet | default('200M') }}
 # query_cache_size                = {{ mysqld.query_cache_size }}
 # show_compatibility_56           = OFF
 
 # MySQL Tunning innodb engine
 default_storage_engine          = InnoDB
-innodb_buffer_pool_instances    = {{ mysqld.innodb_buffer_pool_instances }}
-innodb_buffer_pool_chunk_size   = {{ mysqld.innodb_buffer_pool_chunk_size }}
-innodb_buffer_pool_size         = {{ mysqld.innodb_buffer_pool_size | default('50G') }}
-innodb_fast_shutdown            = {{ mysqld.innodb_fast_shutdown }}
+innodb_buffer_pool_instances    = {{ mysqld.innodb_buffer_pool_instances | default('53') }}
+innodb_buffer_pool_chunk_size   = {{ mysqld.innodb_buffer_pool_chunk_size | default('16G') }}
+innodb_buffer_pool_size         = {{ mysqld.innodb_buffer_pool_size | default('53G') }}
+innodb_fast_shutdown            = {{ mysqld.innodb_fast_shutdown | default('0') }}
 innodb_flush_method             = {{ mysqld.innodb_flush_method | default('O_DIRECT') }}
-innodb_log_file_size            = {{ mysqld.innodb_log_file_size | default('1G') }}
-innodb_io_capacity              = {{ mysqld.innodb_io_capacity | default(1000) }}
-innodb_file_per_table           = {{ mysqld.innodb_file_per_table | default('1') }}
-innodb_lock_wait_timeout        = {{ mysqld.innodb_lock_wait_timeout | default('600') }}
-innodb_log_buffer_size          = {{ mysqld.innodb_log_buffer_size | default('256M') }}
-innodb_open_files               = {{ mysqld.innodb_open_files | default('400') }}
+innodb_log_file_size            = {{ mysqld.innodb_log_file_size | default('6G') }}
+innodb_io_capacity              = {{ mysqld.innodb_io_capacity | default(102400) }}
+innodb_file_per_table           = {{ mysqld.innodb_file_per_table | default('True') }}
+innodb_lock_wait_timeout        = {{ mysqld.innodb_lock_wait_timeout | default('1200') }}
+innodb_log_buffer_size          = {{ mysqld.innodb_log_buffer_size | default('512M') }}
+innodb_open_files               = {{ mysqld.innodb_open_files | default('102400') }}
 
 # MySQL Tunning connection thread
-thread_cache_size               = {{ mysqld.thread_cache_size }}
+thread_cache_size               = {{ mysqld.thread_cache_size | default('256') }}
 sort_buffer_size                = {{ mysqld.sort_buffer_size | default('16M') }}
 read_buffer_size                = {{ mysqld.read_buffer_size | default('32M') }} 
 read_rnd_buffer_size            = {{ mysqld.read_rnd_buffer_size | default('16M') }}
-join_buffer_size                = {{ mysqld.join_buffer_size | default('8M') }}
+join_buffer_size                = {{ mysqld.join_buffer_size | default('16M') }}
 bulk_insert_buffer_size         = {{ mysqld.bulk_insert_buffer_size | default('512M') }}
 tmp_table_size                  = {{ mysqld.tmp_table_size | default('256M') }}
 max_heap_table_size             = {{ mysqld.max_heap_table_size | default('512M') }}
@@ -65,9 +66,9 @@ log_bin_trust_function_creators = {{ mysqld.log_bin_trust_function_creators | de
 
 # Enable the slow query log to see queries with especially long duration
 slow_query_log                  = {{ mysqld.slow_query_log | default('0') }}
-slow_query_log_file             = {{ mysqld.log_slow_location }}
-long_query_time                 = {{ mysqld.long_query_time | default('5') }}
-log_slow_rate_limit             = {{ mysqld.log_slow_rate_limit | default('5000') }}
+slow_query_log_file             = {{ mysqld.log_slow_location | default('/var/log/mysql/slow.log') }}
+long_query_time                 = {{ mysqld.long_query_time | default('1') }}
+log_slow_rate_limit             = {{ mysqld.log_slow_rate_limit | default('1000') }}
 log_slow_verbosity              = {{ mysqld.log_slow_verbosity | default('query_plan') }}
 
 # Replication
@@ -87,5 +88,7 @@ read_only
 skip-slave-start
 relay-log                       = relay-bin
 relay-log-index                 = relay-bin.index
+skip_slave_start		        = {{ mysqld.skip_slave_start | default('OFF') }}
+skip_replica_start		        = {{ mysqld.skip_replica_start | default('OFF') }}
 {% endif %}
 {% endif %}
